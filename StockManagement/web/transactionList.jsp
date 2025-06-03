@@ -16,7 +16,11 @@
     </head>
     <body>
         <%
-            User loginUser = (User) session.getAttribute("LOGIN_USER");          
+            User loginUser = (User) session.getAttribute("LOGIN_USER");
+            if (loginUser == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
         %>
         <h1>Welcome: <%= loginUser.getFullName()%></h1>
         <form action="MainController" method="POST">
