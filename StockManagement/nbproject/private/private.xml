@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/StockManagement/src/java/controllers/SearchUserController.java</file>
+            <file>file:/D:/StockManagement/src/java/controllers/MainController.java</file>
+            <file>file:/D:/StockManagement/src/java/controllers/LoginController.java</file>
+            <file>file:/D:/StockManagement/web/login.jsp</file>
+            <file>file:/D:/StockManagement/src/java/controllers/DeleteUserController.java</file>
+            <file>file:/D:/StockManagement/web/userList.jsp</file>
+            <file>file:/D:/StockManagement/src/java/controllers/CreateUserController.java</file>
+            <file>file:/D:/StockManagement/src/java/controllers/UpdateUserController.java</file>
+            <file>file:/D:/StockManagement/web/alertList.jsp</file>
+            <file>file:/D:/StockManagement/web/addUser.jsp</file>
+            <file>file:/D:/StockManagement/src/java/dao/UserDAO.java</file>
+            <file>file:/D:/StockManagement/web/stockList.jsp</file>
+            <file>file:/D:/StockManagement/web/transactionList.jsp</file>
+        </group>
+    </open-files>
+</project-private>
