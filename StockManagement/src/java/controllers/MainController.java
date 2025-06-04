@@ -1,7 +1,9 @@
 package controllers;
 
 import dao.StockDAO;
+import dao.UserDAO;
 import dto.Stock;
+import dto.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,11 +18,11 @@ import java.util.List;
  * thời làm entry point cho ứng dụng.
  */
 public class MainController extends HttpServlet {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private StockDAO dao = new StockDAO();
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -28,7 +30,7 @@ public class MainController extends HttpServlet {
         String search = request.getParameter("search");
         String sort = request.getParameter("sort");
         List<Stock> list;
-        
+
         try {
             if (search != null && !search.trim().isEmpty()) {
                 // Nếu có param search → tìm kiếm
@@ -52,7 +54,7 @@ public class MainController extends HttpServlet {
         request.getRequestDispatcher("/stockList.jsp")
                 .forward(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -69,6 +71,19 @@ public class MainController extends HttpServlet {
                 request.getRequestDispatcher("DeleteAlertController").forward(request, response);
             } else if ("UpdateAlert".equals(action)) {
                 request.getRequestDispatcher("UpdateAlertController").forward(request, response);
+            } else if ("CreateUser".equals(action)) {
+                request.getRequestDispatcher("CreateUserController").forward(request, response);
+            } else if ("SearchUser".equals(action)) {
+                request.getRequestDispatcher("SearchUserController").forward(request, response);
+            } else if ("DeleteUser".equals(action)) {
+                request.getRequestDispatcher("DeleteUserController").forward(request, response);
+            } else if ("UpdateUser".equals(action)) {
+                request.getRequestDispatcher("UpdateUserController").forward(request, response);
+            } else if ("EditUser".equals(action)) {
+                String userID = request.getParameter("userID");
+                User user = new UserDAO().getUserByID(userID); // Hàm này bạn cần có trong UserDAO
+                request.setAttribute("USER", user);
+                request.getRequestDispatcher("editUser.jsp").forward(request, response);
             } else {
                 response.sendRedirect(url);
             }
@@ -77,7 +92,7 @@ public class MainController extends HttpServlet {
             log("Error in MainControllers", e);
         }
     }
-    
+
     @Override
     public String getServletInfo() {
         return "MainController: handles listing, searching, and sorting stocks";

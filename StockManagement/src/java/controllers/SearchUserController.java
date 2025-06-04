@@ -22,14 +22,14 @@ public class SearchUserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             String search = request.getParameter("search");
-            request.setAttribute("search", search); // để hiển thị lại ô tìm kiếm
+            request.setAttribute("search", search); // to retain search input value in the form
             UserDAO dao = new UserDAO();
             List<User> list = dao.getAll(search);
-            request.setAttribute("list", list);
+            request.setAttribute("USER_LIST", list);
             request.getRequestDispatcher("userList.jsp").forward(request, response);
         } catch (Exception e) {
             log("Error at SearchUserController: " + e.toString());
-            request.setAttribute("MSG", "Lỗi khi tìm kiếm người dùng.");
+            request.setAttribute("MSG", "An error occurred while searching for users.");
             request.getRequestDispatcher("userList.jsp").forward(request, response);
         }
     }
@@ -48,6 +48,6 @@ public class SearchUserController extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "SearchUserController dùng để tìm kiếm người dùng theo userID hoặc fullName";
+        return "SearchUserController is used to search for users by userID or fullName.";
     }
 }

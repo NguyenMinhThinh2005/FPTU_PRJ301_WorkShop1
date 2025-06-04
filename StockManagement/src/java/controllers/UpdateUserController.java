@@ -25,29 +25,29 @@ public class UpdateUserController extends HttpServlet {
         UserDAO dao = new UserDAO();
 
         try {
-            // Chặn nếu chưa đăng nhập
+            // Block access if not logged in
             if (loginUser == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
 
-            // Lấy thông tin từ form
+            // Get data from form
             String userID = request.getParameter("userID");
             String fullName = request.getParameter("fullName");
             String roleID = request.getParameter("roleID");
             String password = request.getParameter("password");
 
-            // Kiểm tra dữ liệu cơ bản
+            // Basic validation
             if (fullName == null || fullName.trim().isEmpty()
                     || roleID == null || roleID.trim().isEmpty()
                     || password == null || password.trim().isEmpty()) {
                 request.setAttribute("MSG", "All fields are required.");
-                request.setAttribute("list", dao.getAll(""));
+                request.setAttribute("USER_LIST", dao.getAll(""));
                 request.getRequestDispatcher("userList.jsp").forward(request, response);
                 return;
             }
 
-            // Tạo đối tượng user và cập nhật
+            // Create user object and update
             User user = new User(userID, fullName, roleID, password);
             boolean updated = dao.update(user);
 
@@ -57,16 +57,16 @@ public class UpdateUserController extends HttpServlet {
                 request.setAttribute("MSG", "Update failed. Please try again.");
             }
 
-            // Load lại danh sách
+            // Reload user list
             List<User> list = dao.getAll("");
-            request.setAttribute("list", list);
+            request.setAttribute("USER_LIST", list);
             request.getRequestDispatcher("userList.jsp").forward(request, response);
 
         } catch (Exception e) {
             log("Error at UpdateUserController: " + e.toString());
             request.setAttribute("MSG", "An error occurred while updating the user.");
             try {
-                request.setAttribute("list", dao.getAll(""));
+                request.setAttribute("USER_LIST", dao.getAll(""));
             } catch (Exception ex) {
                 log("Error loading user list: " + ex.toString());
             }

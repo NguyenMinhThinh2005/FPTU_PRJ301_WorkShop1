@@ -15,17 +15,17 @@
         return;
     }
 %>
-<h1>Chào mừng: <%= loginUser.getFullName() %>!</h1>
+<h1>Welcome: <%= loginUser.getFullName() %>!</h1>
 
-<form action="MainController" method="POST">
-    <button type="submit" name="action" value="Logout">Đăng xuất</button><br/>
-    <input type="text" name="searchID" placeholder="Tìm UserID">
-    <input type="text" name="searchName" placeholder="Tìm FullName">
-    <button type="submit" name="action" value="SearchUser">Tìm kiếm</button>
+<form action="MainController" method="POST"> 
+    <button type="submit" name="action" value="Logout">Logout</button><br/>
+    <input type="text" name="search" placeholder="Search by UserID or Full Name">
+    <button type="submit" name="action" value="SearchUser">Search</button>
 </form>
 
-<a href="addUser.jsp">Thêm người dùng mới</a><br/>
-<a href="stockList.jsp">Về danh sách cổ phiếu</a><br/>
+
+<a href="addUser.jsp">Add New User</a><br/>
+<a href="stockList.jsp">Back to Stock List</a><br/>
 
 <%
     String MSG = (String) request.getAttribute("MSG");
@@ -34,16 +34,16 @@
 <h3><%= MSG %></h3>
 <%
     }
-    ArrayList<User> list = (ArrayList<User>) request.getAttribute("USER_LIST");
+    ArrayList<User> list = (ArrayList<User>) request.getAttribute("USER_LIST"); 
     if (list != null && !list.isEmpty()) {
 %>
 <table border="1">
     <tr>
         <th>No</th>
         <th>UserID</th>
-        <th>FullName</th>
-        <th>RoleID</th>
-        <th>Function</th>
+        <th>Full Name</th>
+        <th>Role ID</th>
+        <th>Actions</th>
     </tr>
     <%
         int count = 0;
@@ -58,8 +58,8 @@
         <td><%= u.getRoleID() %></td>
         <td>
             <input type="hidden" name="userID" value="<%= u.getUserID() %>">
-            <button type="submit" name="action" value="EditUser">Sửa</button>
-            <button type="submit" name="action" value="DeleteUser">Xóa</button>
+            <button type="submit" name="action" value="EditUser">Edit</button>
+            <button type="submit" name="action" value="DeleteUser">Delete</button>
         </td>
     </form>
     </tr>
@@ -67,7 +67,7 @@
     %>
 </table>
 <% } else { %>
-<h3>Không tìm thấy người dùng nào</h3>
+<h3>No users found</h3>
 <% } %>
 </body>
 </html>

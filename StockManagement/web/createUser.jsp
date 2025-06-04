@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Thêm người dùng</title>
+    <title>Add User</title>
 </head>
 <body>
 <%
@@ -21,19 +21,19 @@
     }
 %>
 
-<h1>Thêm người dùng mới</h1>
+<h1>Add New User</h1>
 
 <form action="MainController" method="POST">
-    User ID: <input type="text" name="userID" placeholder="Nhập userID" required /><br/>
-    Full Name: <input type="text" name="fullName" placeholder="Nhập tên đầy đủ" required /><br/>
-    Role ID:
+    User ID: <input type="text" name="userID" placeholder="Enter user ID" required /><br/>
+    Full Name: <input type="text" name="fullName" placeholder="Enter full name" required /><br/>
+    Role:
     <select name="roleID" required>
-        <option value="AD">AD</option>
-        <option value="US">US</option>
+        <option value="AD">Admin</option>
+        <option value="US">User</option>
     </select><br/>
-    Password: <input type="password" name="password" placeholder="Nhập mật khẩu" required /><br/>
+    Password: <input type="password" name="password" placeholder="Enter password" required /><br/>
     <input type="submit" name="action" value="CreateUser" /><br/>
-    <a href="userList.jsp">Về danh sách người dùng</a>
+    <a href="userList.jsp">Back to User List</a>
 </form>
 
 <%
@@ -46,4 +46,4 @@
 %>
 
 </body>
-</html>
+</html>  

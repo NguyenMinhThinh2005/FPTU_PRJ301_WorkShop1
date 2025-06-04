@@ -117,5 +117,22 @@ public class UserDAO {
             return ps.executeUpdate() > 0;
         }
     }
+    public User getUserByID(String userID) throws Exception {
+    String sql = "SELECT userID, fullName, roleID, password FROM tblUsers WHERE userID = ?";
+    try (Connection conn = DBUtils.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, userID);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                String fullName = rs.getString("fullName");
+                String roleID = rs.getString("roleID");
+                String password = rs.getString("password");
+                return new User(userID, fullName, roleID, password);
+            }
+        }
+    }
+    return null;
+}
+
 }
 

@@ -20,7 +20,7 @@ public class DeleteUserController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            // Kiểm tra đăng nhập
+            // Check if the user is logged in
             User loginUser = (User) request.getSession().getAttribute("LOGIN_USER");
             if (loginUser == null) {
                 response.sendRedirect("login.jsp");
@@ -32,7 +32,7 @@ public class DeleteUserController extends HttpServlet {
 
             UserDAO dao = new UserDAO();
 
-            // Không cho phép xóa chính mình
+            // Prevent self-deletion
             if (loginUserID.equals(userID)) {
                 request.setAttribute("MSG", "You cannot delete your own account.");
             } else {
@@ -66,13 +66,13 @@ public class DeleteUserController extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
- 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
- 
+
     @Override
     public String getServletInfo() {
         return "DeleteUserController handles deleting a user, not allowing self-deletion.";
