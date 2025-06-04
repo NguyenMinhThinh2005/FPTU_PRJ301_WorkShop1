@@ -24,8 +24,8 @@
 </form>
 
 
-<a href="addUser.jsp">Add New User</a><br/>
-<a href="stockList.jsp">Back to Stock List</a><br/>
+<a href="createUser.jsp">Add New User</a><br/>
+<a href="MainController">Back to Stock List</a><br/>
 
 <%
     String MSG = (String) request.getAttribute("MSG");

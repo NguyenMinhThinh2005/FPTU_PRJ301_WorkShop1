@@ -24,7 +24,12 @@ public class SearchUserController extends HttpServlet {
             String search = request.getParameter("search");
             request.setAttribute("search", search); // to retain search input value in the form
             UserDAO dao = new UserDAO();
-            List<User> list = dao.getAll(search);
+            List<User> list;
+            if (search == null || search.trim().isEmpty()) {
+                list = dao.getAllUsers();
+            } else {
+                list = dao.getAll(search);
+            }             
             request.setAttribute("USER_LIST", list);
             request.getRequestDispatcher("userList.jsp").forward(request, response);
         } catch (Exception e) {

@@ -6,8 +6,8 @@ package controllers;
 
 import dao.AlertDAO;
 import dto.Alert;
+import dto.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -35,10 +35,20 @@ public class SearchAlertController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
+            User loginUser = (User) request.getSession().getAttribute("LOGIN_USER");
+            if (loginUser == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
             String search = request.getParameter("search");
-            request.setAttribute("search", search);
+            ArrayList<Alert> list = new ArrayList<>();
             AlertDAO dao = new AlertDAO();
-            ArrayList<Alert> list = dao.search(search);
+            request.setAttribute("search", search);
+            if (search == null || search.trim().isEmpty()) {
+                list = dao.getAllAlertsByUser(loginUser.getUserID());
+            } else {
+                list = dao.search(search);
+            }
             request.setAttribute("list", list);
             request.getRequestDispatcher("alertList.jsp").forward(request, response);
         } catch (Exception e) {

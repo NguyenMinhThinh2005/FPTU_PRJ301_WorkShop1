@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="dto.User" %>
+<%@page import="dto.User"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,9 +39,9 @@
         </style>
     </head>
     <body>
-<%
-    User loginUser = (User) session.getAttribute("LOGIN_USER");   
-%>
+        <%
+            User loginUser = (User) session.getAttribute("LOGIN_USER");   
+        %>
         <h1>Welcome, <c:out value="${sessionScope.LOGIN_USER.fullName}"/></h1>
         <p><a href="${pageContext.request.contextPath}/LogoutController">Logout</a></p>
 
@@ -61,10 +61,14 @@
             Sort by price:
             <a href="${pageContext.request.contextPath}/MainController?sort=asc">Ascending</a> |
             <a href="${pageContext.request.contextPath}/MainController?sort=desc">Descending</a> |
-            <a href="alertList.jsp">Alert Management</a> |
+            <a href="alertList.jsp">Alert Management</a>
+            <c:if test="${sessionScope.LOGIN_USER.roleID == 'AD'}">
+               | <a href="${pageContext.request.contextPath}/createStock.jsp">Stock Manager </a> |
+            </c:if>
             <% if (loginUser != null && "AD".equals(loginUser.getRoleID())) { %>
-                <a href="userList.jsp">User Management</a>
+            <a href="userList.jsp">User Management</a>
             <% } %>
+
         </p>
 
         <c:if test="${empty listStock}">
@@ -90,8 +94,10 @@
                     <td><input type="text"  name="sector" value="${stock.sector}" required/></td>
                     <td><input type="number"step="0.01" name="price"  value="${stock.price}" required/></td>
                     <td class="actions">
-                        <button type="submit" name="action" value="update">Update</button>
-                        <button type="submit" name="action" value="delete">Delete</button>
+                        <c:if test="${sessionScope.LOGIN_USER.roleID == 'AD'}">
+                            <button type="submit" name="action" value="update">Update</button>
+                            <button type="submit" name="action" value="delete">Delete</button>
+                        </c:if>
                     </td>
                 </form>
             </tr>
@@ -99,4 +105,4 @@
     </tbody>
 </table>
 </body>
-</html>2
+</html>

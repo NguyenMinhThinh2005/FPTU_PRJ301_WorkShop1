@@ -30,7 +30,7 @@
         </form>
         <a href="createAlert.jsp">Create New Alert</a><br/>
         <a href="transactionList.jsp">Go to Transaction History</a><br/>
-        <a href="stockList.jsp">Go to Stock List</a><br/>
+        <a href="MainController">Go to Stock List</a><br/>
         <%
             String MSG = (String) request.getAttribute("MSG");
             if (MSG != null) {

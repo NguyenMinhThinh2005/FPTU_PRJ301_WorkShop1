@@ -81,9 +81,15 @@ public class MainController extends HttpServlet {
                 request.getRequestDispatcher("UpdateUserController").forward(request, response);
             } else if ("EditUser".equals(action)) {
                 String userID = request.getParameter("userID");
-                User user = new UserDAO().getUserByID(userID); // Hàm này bạn cần có trong UserDAO
+                User user = new UserDAO().getUserByID(userID);
                 request.setAttribute("USER", user);
                 request.getRequestDispatcher("editUser.jsp").forward(request, response);
+            } else if ("Create".equals(action)) {
+                request.getRequestDispatcher("CreateController").forward(request, response);
+            } else if ("update".equals(action)) {
+                request.getRequestDispatcher("UpdateController").forward(request, response);
+            } else if ("delete".equals(action)) {
+                request.getRequestDispatcher("DeleteController").forward(request, response);
             } else {
                 response.sendRedirect(url);
             }

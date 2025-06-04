@@ -22,7 +22,7 @@
                 <option value="decrease">decrease</option>
             </select><br/>
             <input type="submit" name="action" value="CreateAlert" /><br/>
-            <a href="alertList.jsp">Back to Alert List</a>
+            <a href="SearchAlertController">Back to Alert List</a>
         </form>
         <% String msg = (String) request.getAttribute("MSG"); %>
         <% if (msg != null) { %>

@@ -33,7 +33,7 @@
     </select><br/>
     Password: <input type="password" name="password" placeholder="Enter password" required /><br/>
     <input type="submit" name="action" value="CreateUser" /><br/>
-    <a href="userList.jsp">Back to User List</a>
+    <a href="SearchUserController">Back to User List</a>
 </form>
 
 <%

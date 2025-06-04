@@ -6,17 +6,21 @@ package controllers;
 
 import dao.StockDAO;
 import dto.Stock;
+import dto.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
  * @author admin
  */
+@WebServlet("/CreateController")
 public class CreateController extends HttpServlet {
 
     /**
@@ -31,27 +35,41 @@ public class CreateController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        User loginUser  = (User) session.getAttribute("LOGIN_USER");
+
+        // Kiểm tra xem người dùng có phải là admin không
+        if (loginUser  == null || !"AD".equals(loginUser .getRoleID())) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+
         try {
             String ticker = request.getParameter("ticker");
             String name = request.getParameter("name");
             String sector = request.getParameter("sector");
             float price = Float.parseFloat(request.getParameter("price"));
             boolean check = true;
+
             if (price < 0) {
                 request.setAttribute("MSG", "Price must be >= 0");
                 check = false;
             }
+
             StockDAO dao = new StockDAO();
             if (dao.isTickerExist(ticker)) {
                 request.setAttribute("MSG", "Ticker already exists.");
                 request.getRequestDispatcher("createStock.jsp").forward(request, response);
                 return;
             }
-            Stock stock =  new Stock(ticker, name, sector, price, true);
+
+            Stock stock = new Stock(ticker, name, sector, price, true);
             if (check) {
                 request.setAttribute("MSG", "Create successfully");
                 dao.create(stock);
             }
+            List<Stock> list = dao.findAll();
+            request.setAttribute("listStock", list);
             request.getRequestDispatcher("stockList.jsp").forward(request, response);
         } catch (Exception e) {
             log(e.getMessage());
