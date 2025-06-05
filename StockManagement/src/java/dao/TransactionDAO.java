@@ -57,6 +57,28 @@ public class TransactionDAO {
         }
         return list;
     }
+    
+    public Transaction getTransactionById(int id) throws SQLException, ClassNotFoundException {
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM tblTransactions WHERE id = ?")) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Transaction(
+                            rs.getInt("id"),
+                            rs.getString("userID"),
+                            rs.getString("ticker"),
+                            rs.getString("type"),
+                            rs.getInt("quantity"), (float) rs.getDouble("price"),
+                            rs.getString("status")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error retrieving transaction: " + e.getMessage(), e);
+        }
+        return null;
+    }
 
     public boolean create(Transaction transaction) throws Exception {
         Connection conn = null;
@@ -86,17 +108,19 @@ public class TransactionDAO {
         return isCreated;
     }
 
-    public boolean update(int transactionId, String status) throws Exception {
+    public boolean update(int transactionId, int quantity, double price, String type, String status) throws Exception {
         Connection conn = null;
         PreparedStatement ps = null;
         boolean isUpdated = false;
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
-                String sql = "UPDATE tblTransactions SET status = ? WHERE id = ?";
+                String sql = "UPDATE tblTransactions SET type = ?, quantity = ?, price = ? WHERE id = ?";
                 ps = conn.prepareStatement(sql);
-                ps.setString(1, status);
-                ps.setInt(2, transactionId);
+                ps.setString(1, type);
+                ps.setInt(2, quantity);
+                ps.setDouble(3, price);
+                ps.setInt(4, transactionId);
                 isUpdated = ps.executeUpdate() > 0;
             }
         } finally {
@@ -108,5 +132,24 @@ public class TransactionDAO {
             }
         }
         return isUpdated;
+    }
+    
+     public boolean delete(int transactionId) throws Exception {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean isDeleted = false;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                String sql = "DELETE FROM tblTransactions WHERE id = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, transactionId);
+                isDeleted = ps.executeUpdate() > 0;
+            }
+        } finally {
+            if (conn != null) conn.close();
+            if (ps != null) ps.close();
+        }
+        return isDeleted;
     }
 }

@@ -90,6 +90,12 @@ public class MainController extends HttpServlet {
                 request.getRequestDispatcher("UpdateController").forward(request, response);
             } else if ("delete".equals(action)) {
                 request.getRequestDispatcher("DeleteController").forward(request, response);
+            } else if ("CreateTransaction".equals(action)) {
+                request.getRequestDispatcher("CreateTransactionController").forward(request, response);
+            } else if ("SearchTransaction".equals(action)) {
+                request.getRequestDispatcher("SearchTransactionController").forward(request, response);
+            } else if ("UpdateTransaction".equals(action)) {
+                request.getRequestDispatcher("UpdateTransactionController").forward(request, response);
             } else {
                 response.sendRedirect(url);
             }

@@ -29,8 +29,8 @@
             <button type="submit" name="action" value="SearchTransaction">Search</button>
         </form>
         <a href="createTransaction.jsp">Create New Transaction</a><br/>
-        <a href="stockList.jsp">Go to Stock List</a><br/>
-        <a href="alertList.jsp">Go to Alert List</a><br/>
+        <a href="MainController">Go to Stock List</a><br/>
+        <a href="SearchAlertController">Go to Alert List</a><br/>
         <%
             String MSG = (String) request.getAttribute("MSG");
             if (MSG != null) {
@@ -50,9 +50,7 @@
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Status</th>
-                    <% if (loginUser != null && "AD".equals(loginUser.getRoleID())) { %>
-                <th>Function</th>
-                    <% } %>
+                <th>Action</th>
             </tr>
             <%
                 int count = 0;
@@ -60,31 +58,43 @@
                     count++;
             %>
             <tr>
-            <form action="MainController" method="POST">
-                <td><%= count%></td>
-                <td><%= transaction.getUserID()%></td>
-                <td><%= transaction.getTicker()%></td>
-                <td><%= transaction.getType()%></td>
-                <td><%= transaction.getQuantity()%></td>
-                <td><%= transaction.getPrice()%></td>
-                <td><%= transaction.getStatus()%></td>
-                <input type="hidden" name="id" value="<%= transaction.getId()%>">
-                <td>
-                    <% if ("pending".equals(transaction.getStatus()) && loginUser != null && "AD".equals(loginUser.getRoleID())) {%>
-                    <form action="MainController" method="POST">
-                        <input type="hidden" name="transactionId" value="<%= transaction.getId()%>" />
-                        <input type="hidden" name="status" value="executed" />
-                        <button type="submit" name="action" value="UpdateTransaction">Update</button>
-                    </form>
-                    <% } %>
-                </td>
-            </form>
-        </tr>
-        <% }
+                <form action="UpdateTransactionController" method="post">
+                    <td><%= count %></td>
+                    <td><%= transaction.getUserID() %></td>
+                    <td><%= transaction.getTicker() %></td>
+                    <td>
+                        <select name="type">
+                            <option value="buy" <%= "buy".equalsIgnoreCase(transaction.getType()) ? "selected" : "" %>>Buy</option>
+                            <option value="sell" <%= "sell".equalsIgnoreCase(transaction.getType()) ? "selected" : "" %>>Sell</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" name="quantity" value="<%= transaction.getQuantity() %>" min="1" required>
+                    </td>
+                    <td>
+                        <input type="number" name="price" value="<%= transaction.getPrice() %>" min="0.01" step="0.01" required>
+                    </td>
+                    <td>
+                        <select name="status">
+                            <option value="pending" <%= "pending".equalsIgnoreCase(transaction.getStatus()) ? "selected" : "" %>>Pending</option>
+                            <option value="executed" <%= "executed".equalsIgnoreCase(transaction.getStatus()) ? "selected" : "" %>>Executed</option>
+                            <option value="cancelled" <%= "cancelled".equalsIgnoreCase(transaction.getStatus()) ? "selected" : "" %>>Cancelled</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="hidden" name="transactionId" value="<%= transaction.getId() %>">
+                        <input type="submit" value="Update">
+                </form>
+                <form action="DeleteTransactionController" method="post" style="display:inline;">
+                    <input type="hidden" name="transactionId" value="<%= transaction.getId() %>">
+                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+                </form>
+            </tr>
+            <% }
+            %>
+        </table>
+        <%
+            }
         %>
-    </table>
-    <%
-        }
-    %>
-</body>
+    </body>
 </html>
